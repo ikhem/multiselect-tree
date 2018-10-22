@@ -10,6 +10,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from '@material-ui/core/MenuItem';
+import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 
@@ -37,6 +38,10 @@ class AddDialog extends React.Component {
     this.setState({ open: false });
   }
 
+  handleChange = (event) => {
+    this.setState({ type: event.target.value})
+  }
+
   render() {
     const { open, type, classes } = this.props;
     return (
@@ -45,6 +50,7 @@ class AddDialog extends React.Component {
         onClose={this.props.handleClose}
         aria-labelledby="form-dialog-title"
         fullWidth
+        className={classes.root}
       >
         <DialogTitle id="form-dialog-title">Create List</DialogTitle>
         <DialogContent className={classes.main}>
@@ -68,15 +74,35 @@ class AddDialog extends React.Component {
           </div>
 
           <div className={classes.kdshift}>
-            <DownShift>
-              {({ isOpen, toggleMenu, getInputProps }) => (
+          {
+            type === 'Categories' && (
+              <DownShift>
+              {({ 
+                isOpen, 
+                toggleMenu, 
+                getInputProps 
+              }) => (
                 <div>
-                  <TextField />
+                  <TextField
+                    InputProps = {
+                      {...getInputProps({ onClick: () => toggleMenu() })}
+                    }
+                  />
 
-                  
+                  {
+                    isOpen && (
+                      <Paper>
+                        <MenuItem>
+
+                        </MenuItem>
+                      </Paper>
+                    )
+                  }
                 </div>
               )}
-            </DownShift>
+              </DownShift>  
+            )
+          }
           </div>
         </DialogContent>
         <DialogActions>
