@@ -1,28 +1,55 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+
+import Button from '@material-ui/core/Button';
+
+const styles =  {
+  root: {
+    width: '100%',
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    height: 75,
+    backgroundColor: 'blue',
+  },
+  addBtn: {
+    height: 35,
+    width: 35,
+    color: 'white',
+    backgroundColor: 'Orange',
+    margin: 15,
+  },
+}
 
 class App extends Component {
+
+  state = { isOpen: false };
+
+  openDialog = () => {
+    this.setState({ isOpen: true });
+  }
+
   render() {
+    const { classes } = this.props;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
+      <div className={classes.root}>
+        <header className={classes.header}>
+          <Button 
+            className={classes.addBtn}
+            onClick={this.openDialog}  
           >
-            Learn React
-          </a>
+            +
+          </Button>
         </header>
       </div>
     );
   }
 }
 
-export default App;
+App.propTypes = {
+  classes: PropTypes.object
+};
+
+export default withStyles(styles)(App);
