@@ -4,9 +4,15 @@ import { withStyles } from '@material-ui/core/styles';
 
 import Downshift from 'downshift';
 
+import Checkbox from '@material-ui/core/Checkbox';
+import Collapse from '@material-ui/core/Collapse';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
+import data from '../../data';
 
 const styles = {
   root: {
@@ -20,12 +26,16 @@ const styles = {
   }
 }
 
-const DownShiftSelectTree = ({classes}) => {
+const DownShiftSelectTree = ({classes,availabledata}) => {
+  console.log('data: ', availabledata);
+  const isOpen=true;
   return (
     <div className={classes.root}>
       <h1>Categories</h1>
-      <Downshift>
-        {({getInputProps, isOpen, toggleMenu}) => (
+      <Downshift
+        itemToString={(item) => (item ? item.value : '')}
+      >
+        {({getInputProps, getItemProps, isOpen, toggleMenu, highlightedIndex}) => (
           <div>
             <TextField 
               fullWidth
@@ -35,9 +45,38 @@ const DownShiftSelectTree = ({classes}) => {
             {
               isOpen && (
                 <Paper square className={classes.paper}>
-                  <MenuItem>
-                    {/* Trap */}
-                  </MenuItem>
+                  {
+                    data.map((item, index) => (
+                      <ListItem
+                        key={index}
+                        selected={highlightedIndex === index}
+                        {...getItemProps({
+                          item,
+                          index,
+                        })}
+                      >
+                        <Checkbox />
+                        <ListItemText 
+                          primary={item.label}                          selected={highlightedIndex === index}
+
+                        />
+                        {
+                          item.children && (
+                            <Collapse in={isOpen}>
+                              <List>
+                                {item.children.map((child) => (
+                                  <ListItem>
+                                    <Checkbox />
+                                    <ListItemText primary={child.label} />
+                                  </ListItem>
+                                ))}
+                              </List>
+                            </Collapse>
+                          )
+                        }
+                      </ListItem>
+                    ))
+                  }
                 </Paper>
               )
             }
